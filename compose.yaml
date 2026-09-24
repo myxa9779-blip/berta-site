@@ -3,6 +3,7 @@ services:
     build:
       context: .
       args:
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmjs.org}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Set NEXT_PUBLIC_SITE_URL in .env}
     env_file: .env
     environment:

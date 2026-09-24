@@ -23,6 +23,8 @@ Next.js 15, React 19, Payload CMS 3, SQLite. Репозиторий содерж
 
 3. Соберите и запустите:
 
+   Если сервер не имеет доступа к основному реестру npm (например, KIBO), добавьте в `.env` `NPM_REGISTRY=https://registry.npmmirror.com`. Это адрес загрузки зависимостей, не адрес сайта.
+
    ```sh
    docker compose up -d --build
    docker compose ps
