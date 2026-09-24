@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-accent: #d71920;
+  --color-ink: #111820;
+  --color-steel: #5f6871;
+  --color-mist: #f1f3f4;
+  --font-manrope: "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
+}
+
+body {
+  margin: 0;
+  background: #f7f8f8;
+  color: var(--color-ink);
+  font-family: var(--font-manrope);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.architectural-grid {
+  background-image:
+    linear-gradient(rgba(17, 24, 32, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 24, 32, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.dark-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.cms-richtext {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.cms-richtext h2,
+.cms-richtext h3 {
+  margin: 2.25rem 0 1rem;
+  color: var(--color-ink);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.cms-richtext h2 {
+  font-size: 2rem;
+}
+
+.cms-richtext h3 {
+  font-size: 1.5rem;
+}
+
+.cms-richtext p,
+.cms-richtext ul,
+.cms-richtext ol {
+  margin: 1rem 0;
+}
+
+.cms-richtext a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.reveal {
+  animation: reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.reveal-delay {
+  animation: reveal 0.8s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 640px) {
+  .hero-zoomout-image {
+    -webkit-mask-image: radial-gradient(ellipse 96% 105% at 100% 50%, #000 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse 96% 105% at 100% 50%, #000 55%, transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

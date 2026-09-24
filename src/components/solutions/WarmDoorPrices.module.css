@@ -1,0 +1,654 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  background: #7e7e83;
+}
+
+.windowSection {
+  border-top: 0;
+}
+
+.section::before {
+  content: none;
+}
+
+.headingBand {
+  padding: clamp(64px, 7vw, 96px) 0;
+  background: #0b1620;
+}
+
+.bodyBand {
+  padding: clamp(64px, 7vw, 96px) 0;
+  background: #7e7e83;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 3.4vw, 48px);
+}
+
+.heading {
+  max-width: 980px;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(40px, 5.2vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
+}
+
+.intro {
+  max-width: 460px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.intro p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cta svg {
+  width: 17px;
+  height: 17px;
+  color: var(--color-accent);
+  transition: transform 240ms ease;
+}
+
+.cta:hover svg {
+  transform: translate(3px, -3px);
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  --card-index: 0;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 32, 0.09);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 50px rgba(12, 20, 28, 0.055);
+  animation: cardEnter 720ms calc(var(--card-index) * 90ms) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition:
+    transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 320ms ease,
+    border-color 320ms ease;
+}
+
+.card:hover {
+  border-color: rgba(215, 25, 32, 0.25);
+  box-shadow: 0 26px 64px rgba(12, 20, 28, 0.1);
+  transform: translateY(-6px);
+}
+
+.featured {
+  border-color: rgba(215, 25, 32, 0.25);
+}
+
+.visual {
+  position: relative;
+  display: grid;
+  min-height: 290px;
+  place-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(17, 24, 32, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0) 72%, rgba(185, 191, 192, 0.35) 72.5%, rgba(239, 241, 240, 0.96) 73%),
+    linear-gradient(135deg, #f9faf9, #e2e6e5);
+}
+
+.visual::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.8) 48%, transparent 64%);
+  content: "";
+  transform: translateX(-120%);
+  transition: transform 800ms ease;
+}
+
+.card:hover .visual::before {
+  transform: translateX(120%);
+}
+
+.visual::after {
+  position: absolute;
+  right: -34px;
+  bottom: -64px;
+  width: 190px;
+  height: 190px;
+  border: 1px solid rgba(215, 25, 32, 0.15);
+  border-radius: 50%;
+  content: "";
+}
+
+.door {
+  position: relative;
+  z-index: 1;
+  width: min(78%, 260px);
+  height: 260px;
+  filter: drop-shadow(0 20px 14px rgba(17, 24, 32, 0.18));
+  transform-origin: center bottom;
+  transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .door {
+  transform: scale(1.025);
+}
+
+.windowVisual {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(221, 228, 230, 0.9)),
+    linear-gradient(135deg, #f1f3f4, #d9dfe1);
+}
+
+.window {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(80%, 254px);
+  height: 218px;
+  align-content: end;
+  perspective: 900px;
+  transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .window {
+  transform: scale(1.025);
+}
+
+.windowFrame {
+  position: relative;
+  display: grid;
+  height: 196px;
+  gap: 2px;
+  border: 7px solid #f0f2f1;
+  border-radius: 2px;
+  padding: 3px;
+  background: linear-gradient(135deg, #c8cece, #fafbfa 48%, #aeb7b8);
+  box-shadow:
+    inset 0 0 0 1px #7d888b,
+    inset 0 0 0 3px rgba(255, 255, 255, 0.85),
+    0 18px 18px rgba(17, 24, 32, 0.18);
+}
+
+.windowSingle .windowFrame {
+  grid-template-columns: 1fr;
+}
+
+.windowSingle {
+  width: min(54%, 164px);
+}
+
+.windowDouble .windowFrame {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.windowTriple .windowFrame {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.windowPanoramic .windowFrame {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.windowPanel {
+  position: relative;
+  overflow: hidden;
+  border: 7px solid #edf0ef;
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255, 255, 255, 0.72) 0 11%,
+      transparent 11% 50%,
+      rgba(255, 255, 255, 0.23) 50% 60%,
+      transparent 60%
+    ),
+    linear-gradient(170deg, #a9c8d5 0%, #d9e8eb 47%, #94b5c3 100%);
+  box-shadow:
+    inset 0 0 0 2px #35444a,
+    0 0 0 1px #879194,
+    0 0 8px rgba(17, 24, 32, 0.12);
+  transform-origin: left center;
+  transition:
+    transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 500ms ease;
+}
+
+.windowPanel::before {
+  position: absolute;
+  z-index: 2;
+  inset: -6px;
+  background:
+    linear-gradient(45deg, transparent 46%, rgba(112, 124, 127, 0.72) 48%, transparent 51%) top left / 15px 15px no-repeat,
+    linear-gradient(-45deg, transparent 46%, rgba(112, 124, 127, 0.72) 48%, transparent 51%) top right / 15px 15px no-repeat,
+    linear-gradient(135deg, transparent 46%, rgba(112, 124, 127, 0.72) 48%, transparent 51%) bottom left / 15px 15px no-repeat,
+    linear-gradient(-135deg, transparent 46%, rgba(112, 124, 127, 0.72) 48%, transparent 51%) bottom right / 15px 15px no-repeat;
+  content: "";
+  pointer-events: none;
+}
+
+.windowPanel::after {
+  position: absolute;
+  z-index: 1;
+  inset: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 0 0 1px rgba(32, 48, 54, 0.38);
+  content: "";
+  pointer-events: none;
+}
+
+.card:hover .windowActivePanel {
+  filter: brightness(1.04);
+  transform: rotateY(-5deg);
+}
+
+.windowHandle {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: 1px;
+  width: 4px;
+  height: 32px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #c2c9c8, #fff 55%, #9aa4a5);
+  box-shadow:
+    0 0 0 1px #657279,
+    0 2px 5px rgba(17, 24, 32, 0.28);
+  transform: translateY(-50%);
+}
+
+.windowHandleLeft {
+  right: auto;
+  left: 1px;
+}
+
+.windowHandle::after {
+  position: absolute;
+  top: 14px;
+  right: 0;
+  width: 12px;
+  height: 4px;
+  border-radius: 3px;
+  background: inherit;
+  box-shadow: inherit;
+  content: "";
+}
+
+.windowHandleLeft::after {
+  right: auto;
+  left: 0;
+}
+
+.windowFixedMark {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.windowFixedMark::before,
+.windowFixedMark::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 999px;
+  background: #2e4772;
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.windowFixedMark::before {
+  width: 100%;
+  height: 1.5px;
+}
+
+.windowFixedMark::after {
+  width: 1.5px;
+  height: 100%;
+}
+
+.windowOpeningMark {
+  position: absolute;
+  z-index: 3;
+  inset: 12px;
+}
+
+.windowOpeningMarkReverse {
+  transform: scaleX(-1);
+}
+
+.windowTurnMark,
+.windowTiltMark {
+  position: absolute;
+  inset: 0;
+}
+
+.windowTurnMark::before,
+.windowTurnMark::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 50%;
+  content: "";
+}
+
+.windowTurnMark::before {
+  top: 0;
+  background: linear-gradient(
+    to bottom right,
+    transparent 49%,
+    #2e4772 49.4%,
+    #2e4772 50.6%,
+    transparent 51%
+  );
+}
+
+.windowTurnMark::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top right,
+    transparent 49%,
+    #2e4772 49.4%,
+    #2e4772 50.6%,
+    transparent 51%
+  );
+}
+
+.windowTiltMark {
+  background:
+    linear-gradient(
+        to bottom right,
+        transparent 49%,
+        #2e4772 49.4%,
+        #2e4772 50.6%,
+        transparent 51%
+      )
+      left / 50% 100% no-repeat,
+    linear-gradient(
+        to bottom left,
+        transparent 49%,
+        #2e4772 49.4%,
+        #2e4772 50.6%,
+        transparent 51%
+      )
+      right / 50% 100% no-repeat;
+}
+
+.windowSill {
+  justify-self: center;
+  width: calc(100% + 22px);
+  height: 7px;
+  background: linear-gradient(180deg, #fff, #c2c8c8 62%, #8f999b);
+  box-shadow: 0 7px 9px rgba(17, 24, 32, 0.15);
+  clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
+}
+
+.shadow {
+  fill: rgba(17, 24, 32, 0.11);
+}
+
+.outerFrame {
+  fill: #f4f6f5;
+  stroke: #7c878a;
+  stroke-width: 3;
+}
+
+.frameFill {
+  stroke: #c1c8c8;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+}
+
+.doorSash {
+  fill: #edf0ef;
+  stroke: #7f8a8c;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 1px 2px rgba(17, 24, 32, 0.18));
+}
+
+.glass {
+  stroke: #2c3a40;
+  stroke-width: 2;
+}
+
+.mullion {
+  stroke: #dce0df;
+  stroke-width: 9;
+  filter: drop-shadow(1px 0 0 #7f898c);
+}
+
+.handle {
+  fill: #d9dedd;
+  stroke: #697477;
+  stroke-width: 0.65;
+  filter: drop-shadow(1px 2px 2px rgba(17, 24, 32, 0.3));
+}
+
+.handlePlate {
+  fill: #b9c1c1;
+  stroke: #697477;
+  stroke-width: 0.7;
+}
+
+.hinges {
+  fill: #c8cecd;
+  stroke: #6f7a7c;
+  stroke-width: 0.7;
+  filter: drop-shadow(1px 1px 1px rgba(17, 24, 32, 0.2));
+}
+
+.highlight {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.threshold {
+  fill: #c5cccb;
+  stroke: #7d8789;
+  stroke-width: 0.8;
+}
+
+.badge {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 18px;
+  border-radius: 999px;
+  padding: 9px 12px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.number {
+  position: absolute;
+  z-index: 1;
+  right: 18px;
+  bottom: 14px;
+  color: rgba(17, 24, 32, 0.35);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.content {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.note {
+  margin: 0 0 14px;
+  color: var(--color-accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.content h3 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+}
+
+.priceBlock {
+  display: grid;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 26px;
+}
+
+.priceBlock strong {
+  color: var(--color-ink);
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+.featured .priceBlock strong {
+  color: var(--color-accent);
+}
+
+.oldPrice {
+  width: fit-content;
+  color: var(--color-steel);
+  font-size: 13px;
+  line-height: 1.4;
+  text-decoration: line-through;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1.5px;
+}
+
+.priceLabel {
+  color: var(--color-steel);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .windowSection .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 719px) {
+  .headingBand,
+  .bodyBand {
+    padding: 64px 0 72px;
+  }
+
+  .heading h2 br {
+    display: none;
+  }
+
+  .grid {
+    grid-auto-columns: minmax(82vw, 1fr);
+    grid-auto-flow: column;
+    overflow-x: auto;
+    padding: 4px 20px 22px 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(17, 24, 32, 0.2) transparent;
+  }
+
+  .card {
+    scroll-snap-align: start;
+  }
+
+  .visual {
+    min-height: 268px;
+  }
+
+  .door {
+    height: 240px;
+  }
+
+  .content {
+    min-height: 232px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+    transition: none;
+  }
+
+  .card:hover,
+  .card:hover .door,
+  .card:hover .window,
+  .card:hover .windowActivePanel,
+  .card:hover .visual::before {
+    transform: none;
+  }
+}

@@ -1,0 +1,581 @@
+.berta-map {
+  --accent: #d71920;
+  --ink: #111820;
+  --mist: #f1f3f4;
+  --steel: #5f6871;
+  --paper: #ffffff;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(64px, 8vw, 128px) clamp(20px, 4.4vw, 64px);
+  color: var(--ink);
+}
+
+.berta-map *,
+.berta-map *::before,
+.berta-map *::after {
+  box-sizing: border-box;
+}
+
+.berta-map__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: clamp(28px, 4vw, 54px);
+}
+
+.berta-map__eyebrow,
+.berta-map__office-region {
+  margin: 0 0 18px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.berta-map__header h2 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(40px, 5.4vw, 78px);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+}
+
+.berta-map__meta {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.berta-map__meta span {
+  border: 1px solid #d9dddf;
+  border-radius: 999px;
+  padding: 11px 16px;
+  color: var(--steel);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.berta-map__stage {
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(17, 24, 32, 0.08);
+}
+
+.berta-map__canvas {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  aspect-ratio: 1000 / 640;
+  background-color: #f7f8f8;
+  background-image:
+    linear-gradient(rgba(17, 24, 32, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 24, 32, 0.055) 1px, transparent 1px);
+  background-position: center;
+  background-size: 48px 48px;
+}
+
+.berta-map__canvas.is-pannable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.berta-map__canvas.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.berta-map__canvas.is-dragging .berta-map__svg {
+  transition: none;
+}
+
+.berta-map__canvas::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 47% 54%,
+      rgba(255, 255, 255, 0) 0 22%,
+      rgba(247, 248, 248, 0.84) 78%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.18),
+      rgba(255, 255, 255, 0.58)
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.berta-map__svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(
+      var(--map-pan-x, 0),
+      var(--map-pan-y, 0),
+      0
+    )
+    scale(var(--map-zoom, 1));
+  transform-origin: 52% 52%;
+  transition: transform 220ms ease;
+}
+
+.berta-map__region path {
+  fill: #e7eaeb;
+  stroke: #fff;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  transition:
+    fill 220ms ease,
+    filter 220ms ease;
+  vector-effect: non-scaling-stroke;
+}
+
+.berta-map__region:hover path,
+.berta-map__region.is-active path {
+  fill: #dadddf;
+  filter: drop-shadow(0 10px 14px rgba(17, 24, 32, 0.09));
+}
+
+.berta-map__region-label {
+  fill: #657079;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.berta-map__region--ingushetia .berta-map__region-label {
+  font-size: 11px;
+}
+
+.berta-map__marker {
+  cursor: pointer;
+  opacity: 0;
+  outline: none;
+  animation: berta-marker-in 420ms cubic-bezier(0.2, 0.75, 0.25, 1.15)
+    forwards;
+  animation-delay: var(--marker-delay);
+}
+
+.berta-map__marker-hit {
+  fill: transparent;
+}
+
+.berta-map__marker-pulse {
+  fill: rgba(215, 25, 32, 0.14);
+  opacity: 0;
+  transform-origin: center;
+}
+
+.berta-map__marker-pin {
+  fill: var(--accent);
+  stroke: #fff;
+  stroke-width: 2;
+  transform-origin: 0 0;
+  transition: transform 180ms ease;
+  vector-effect: non-scaling-stroke;
+}
+
+.berta-map__marker-core {
+  fill: #fff;
+  pointer-events: none;
+}
+
+.berta-map__marker:hover .berta-map__marker-pin,
+.berta-map__marker:focus .berta-map__marker-pin,
+.berta-map__marker.is-selected .berta-map__marker-pin {
+  transform: scale(1.14) translateY(-1px);
+}
+
+.berta-map__marker:focus .berta-map__marker-pulse,
+.berta-map__marker.is-selected .berta-map__marker-pulse {
+  opacity: 1;
+  animation: berta-marker-pulse 1.8s ease-out infinite;
+}
+
+.berta-map__marker:focus-visible .berta-map__marker-hit {
+  fill: none;
+  stroke: var(--ink);
+  stroke-dasharray: 3 3;
+  stroke-width: 2;
+}
+
+.berta-map__legend {
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(17, 24, 32, 0.08);
+  border-radius: 999px;
+  padding: 9px 13px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 26px rgba(17, 24, 32, 0.08);
+  color: var(--steel);
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.berta-map__legend span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(215, 25, 32, 0.12);
+}
+
+.berta-map__zoom {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 46px minmax(58px, auto) 46px;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 32, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 28px rgba(17, 24, 32, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.berta-map__zoom button {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.berta-map__zoom button:hover,
+.berta-map__zoom button:focus-visible {
+  background: var(--accent);
+  color: #fff;
+}
+
+.berta-map__zoom button:disabled {
+  background: transparent;
+  color: #a8afb4;
+  cursor: default;
+}
+
+.berta-map__zoom output {
+  border-right: 1px solid #e1e4e5;
+  border-left: 1px solid #e1e4e5;
+  color: var(--steel);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.berta-map__popover {
+  position: absolute;
+  top: var(--office-y);
+  left: var(--office-x);
+  z-index: 4;
+  width: min(300px, calc(100% - 32px));
+  padding: 18px 0 0 18px;
+  transform: translate(0, 0);
+  animation: berta-card-in 180ms ease-out both;
+}
+
+.berta-map__popover.is-left {
+  padding-right: 18px;
+  padding-left: 0;
+  transform: translateX(-100%);
+}
+
+.berta-map__popover.is-above {
+  padding-top: 0;
+  padding-bottom: 18px;
+  transform: translateY(-100%);
+}
+
+.berta-map__popover.is-left.is-above {
+  transform: translate(-100%, -100%);
+}
+
+.berta-map__popover[data-panned="true"] {
+  top: auto;
+  right: auto;
+  bottom: 18px;
+  left: 18px;
+  padding: 0;
+  transform: none;
+}
+
+.berta-map__office-card {
+  position: relative;
+  border: 1px solid rgba(17, 24, 32, 0.07);
+  border-radius: 20px;
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 22px 54px rgba(17, 24, 32, 0.16);
+}
+
+.berta-map__office-card h3 {
+  margin: 0 36px 8px 0;
+  font-size: 29px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.berta-map__office-region {
+  margin-bottom: 14px;
+  font-size: 10px;
+}
+
+.berta-map__office-address {
+  min-height: 40px;
+  margin: 0 36px 18px 0;
+  color: var(--steel);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.berta-map__office-phone {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.berta-map__office-phone:hover,
+.berta-map__office-phone:focus-visible {
+  color: var(--accent);
+}
+
+.berta-map__route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #e5e8e9;
+  padding-top: 15px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.berta-map__route span {
+  font-size: 16px;
+}
+
+.berta-map__card-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--mist);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.berta-map__card-close:hover,
+.berta-map__card-close:focus-visible {
+  background: var(--ink);
+  color: #fff;
+}
+
+.berta-map__mobile-card {
+  display: none;
+}
+
+.berta-map__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid rgba(17, 24, 32, 0.09);
+  padding: 25px 28px;
+  background: var(--paper);
+}
+
+.berta-map__footer p {
+  margin: 0;
+  color: var(--steel);
+  font-size: 14px;
+}
+
+.berta-map__footer a {
+  flex: 0 0 auto;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.berta-map__footer a:hover,
+.berta-map__footer a:focus-visible {
+  color: var(--accent);
+}
+
+@keyframes berta-marker-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes berta-marker-pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.25);
+  }
+}
+
+@keyframes berta-card-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .berta-map {
+    padding: 64px 16px;
+  }
+
+  .berta-map__header {
+    display: block;
+  }
+
+  .berta-map__header h2 {
+    font-size: clamp(39px, 12.5vw, 58px);
+  }
+
+  .berta-map__meta {
+    margin-top: 24px;
+  }
+
+  .berta-map__stage {
+    border-radius: 20px;
+  }
+
+  .berta-map__canvas {
+    min-height: 330px;
+    aspect-ratio: 1 / 0.82;
+  }
+
+  .berta-map__svg {
+    transform-origin: 53% 52%;
+  }
+
+  .berta-map__zoom {
+    top: 12px;
+    right: 12px;
+    grid-template-columns: 48px minmax(54px, auto) 48px;
+    border-radius: 13px;
+  }
+
+  .berta-map__zoom button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .berta-map__marker-pin {
+    transform: scale(1.12);
+  }
+
+  .berta-map__marker:hover .berta-map__marker-pin,
+  .berta-map__marker:focus .berta-map__marker-pin,
+  .berta-map__marker.is-selected .berta-map__marker-pin {
+    transform: scale(1.28) translateY(-1px);
+  }
+
+  .berta-map__region-label,
+  .berta-map__popover,
+  .berta-map__legend {
+    display: none;
+  }
+
+  .berta-map__mobile-card {
+    display: block;
+    min-height: 112px;
+    padding: 12px;
+    background: #f7f8f8;
+  }
+
+  .berta-map__mobile-card > p {
+    margin: 0;
+    border: 1px solid #e1e4e5;
+    border-radius: 16px;
+    padding: 20px;
+    background: #fff;
+    color: var(--steel);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .berta-map__mobile-card .berta-map__office-card {
+    border-radius: 16px;
+    box-shadow: none;
+  }
+
+  .berta-map__footer {
+    display: block;
+    padding: 22px 20px;
+  }
+
+  .berta-map__footer a {
+    display: inline-block;
+    margin-top: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .berta-map__marker,
+  .berta-map__popover {
+    opacity: 1;
+    animation: none;
+  }
+
+  .berta-map__marker-pulse {
+    animation: none !important;
+  }
+
+  .berta-map__region path,
+  .berta-map__marker-pin,
+  .berta-map__svg {
+    transition: none;
+  }
+}
